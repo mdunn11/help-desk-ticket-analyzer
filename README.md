@@ -76,3 +76,8 @@ The project is intentionally developed incrementally so that new functionality r
 ---
 
 **Author:** Marquita L. Dunn
+## Copyright
+
+© 2026 Marquita L. Dunn. All rights reserved.
+
+This repository is shared publicly for educational and professional portfolio purposes. No permission is granted to reproduce, distribute, or represent this work as your own.
