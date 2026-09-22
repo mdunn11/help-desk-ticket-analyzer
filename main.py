@@ -26,6 +26,7 @@ def load_tickets():
                  "status": row["status"]
              }
              tickets.append(ticket)
+        return tickets
 def display_tickets(tickets):
         for ticket in tickets:
             print("Ticket ID:", ticket["id"])
@@ -55,6 +56,7 @@ def search_ticket(tickets, search_id):
     return None
 
 def main():
+    tickets = load_tickets()
     try:
         search_id = int(input("Enter Ticket ID: "))
     except ValueError:
@@ -77,4 +79,3 @@ def main():
             else:
                 print("Ticket not found.")
 main()
-   
