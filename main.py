@@ -1,29 +1,31 @@
 import csv
 
 print("IT Help Desk Ticket Analyzer")
-tickets = [
-    {
-    "id": 1001,
-    "category": "Password Reset",
-    "priority": "Medium",
-    "status": "open"
-},
-{ "id": 1002,
- "category": "Software",
- "priority": "High",
- "status": "pending"
-}
-]
+
 def load_tickets():
      tickets = []
      with open("tickets.csv", "r") as file:
         reader = csv.DictReader(file)
+        valid_statuses = ["open", "closed", "pending"]
+        valid_priorities = ["Low", "High", "Medium"]
         for row in reader:
+             status = row["status"].strip().lower()
+             if status not in valid_statuses:
+                print("Invalid status:", status)
+                continue
+             priority = row["priority"].strip().title()
+             if priority not in valid_priorities:
+                print("Invalid priority:", priority)
+                continue
+             category = row["category"].strip().title()
+             if not category:
+                print("Invalid category:")
+                continue
              ticket = {
                  "id": int(row["id"]),
-                 "category": row["category"],
-                 "priority": row["priority"],
-                 "status": row["status"]
+                 "category": category,
+                 "priority": priority, 
+                 "status": status
              }
              tickets.append(ticket)
         return tickets
@@ -46,7 +48,7 @@ def analyze_tickets(tickets):
                     closed_count += 1
                 elif ticket["status"] == "pending":
                     pending_count += 1   
-                if ticket["priority"] == "High":
+                if ticket["priority"] == "High".title():
                     high_priority_count += 1
     return open_count, closed_count, pending_count, high_priority_count
 def search_ticket(tickets, search_id):
