@@ -59,25 +59,42 @@ def search_ticket(tickets, search_id):
 
 def main():
     tickets = load_tickets()
-    try:
-        search_id = int(input("Enter Ticket ID: "))
-    except ValueError:
-        print("Please enter a valid numeric Ticket ID.")
-        search_id = None
-    display_tickets(tickets)
-    open_count, closed_count, pending_count, high_priority_count = analyze_tickets(tickets)
-    print("Total Open Tickets:", open_count)
-    print("Total Closed Tickets:", closed_count)
-    print("Total Pending Tickets:", pending_count)
-    print("Total High Priority Tickets:", high_priority_count)
-    if search_id is not None:
-            found_ticket = search_ticket(tickets, search_id)
-            if found_ticket is not None:
-                print("Ticket Found:")
-                print("Ticket ID:", found_ticket["id"])
-                print("Category:", found_ticket["category"])
-                print("Priority:", found_ticket["priority"])
-                print("Status:", found_ticket["status"])
-            else:
-                print("Ticket not found.")
+    while True:
+        print("\nMenu")
+        print("1. View all tickets")
+        print("2. Search for a ticket")
+        print("3. View ticket summary")
+        print("4. Exit")
+        choice = input("Choose an option: ")
+        if choice == "1":
+            display_tickets(tickets)
+        elif choice == "2":
+            try:
+                search_id = int(input("Enter Ticket ID: "))
+            except ValueError:
+                print("Please enter a valid numeric Ticket ID.")
+                search_id = None
+            if search_id is not None:
+                found_ticket = search_ticket(tickets, search_id)
+                if found_ticket is not None:
+                    print("Ticket Found:")
+                    print("Ticket ID:", found_ticket["id"])
+                    print("Category:", found_ticket["category"])
+                    print("Priority:", found_ticket["priority"])
+                    print("Status:", found_ticket["status"])
+                else:
+                    print("Ticket not found.")
+        if choice == "3":
+            open_count, closed_count, pending_count, high_priority_count = analyze_tickets(tickets)
+            print("Total Open Tickets:", open_count)
+            print("Total Closed Tickets:", closed_count)
+            print("Total Pending Tickets:", pending_count)
+            print("Total High Priority Tickets:", high_priority_count)
+        elif choice == "4":
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid option. Please choose 1, 2, 3, or 4.")
+
+
 main()
