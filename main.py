@@ -42,18 +42,27 @@ def analyze_tickets(tickets):
     pending_count = 0
     high_priority_count = 0
     unresolved_count = 0
+    high_priority_unresolved_count = 0
+    category_counts = {}
     for ticket in tickets:
-                if ticket["status"] == "open":
-                    open_count += 1
-                elif ticket["status"] == "closed":
-                    closed_count += 1
-                elif ticket["status"] == "pending":
-                    pending_count += 1   
-                if ticket["priority"] == "High".title():
-                    high_priority_count += 1
-                if ticket["status"] == "open" or ticket["status"] == "pending":
-                    unresolved_count += 1
-    return open_count, closed_count, pending_count, high_priority_count, unresolved_count
+        category = ticket["category"]
+        if category not in category_counts:
+            category_counts[category] = 1
+        else:
+            category_counts[category] += 1
+        if ticket["status"] == "open":
+            open_count += 1
+        elif ticket["status"] == "closed":
+            closed_count += 1
+        elif ticket["status"] == "pending":
+            pending_count += 1   
+        if ticket["priority"] == "High".title():
+            high_priority_count += 1
+        if ticket["status"] == "open" or ticket["status"] == "pending":
+            unresolved_count += 1
+        if ticket["priority"] == "High" and (ticket["status"] == "open" or ticket["status"] == "pending"):
+            high_priority_unresolved_count += 1    
+    return open_count, closed_count, pending_count, high_priority_count, unresolved_count, high_priority_unresolved_count, category_counts
 def search_ticket(tickets, search_id):
     for ticket in tickets:
         if ticket["id"] == search_id:
@@ -88,12 +97,16 @@ def main():
                 else:
                     print("Ticket not found.")
         if choice == "3":
-            open_count, closed_count, pending_count, high_priority_count, unresolved_count = analyze_tickets(tickets)
+            open_count, closed_count, pending_count, high_priority_count, unresolved_count, high_priority_unresolved_count, category_counts = analyze_tickets(tickets)
             print("Total Open Tickets:", open_count)
             print("Total Closed Tickets:", closed_count)
             print("Total Pending Tickets:", pending_count)
             print("Total High Priority Tickets:", high_priority_count)        
             print("Total Unresolved Tickets:", unresolved_count)
+            print("High Priority Unresolved Tickets:", high_priority_unresolved_count)
+            print("Tickets by Category:")
+            for category, count in category_counts.items():
+                print(f"  {category}: {count}")
         elif choice == "4":
             print("Exiting program.")
             break
